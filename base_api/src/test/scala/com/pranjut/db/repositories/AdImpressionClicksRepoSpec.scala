@@ -25,7 +25,7 @@ class AdImpressionClicksRepoSpec extends SlickSpec
     Await.result(InMemObjs.impressionClicksAction.deleteSchema, 1.minute)
   }
 
-  val adRepo = new AdsRepo(InMemObjs.adAction)
+  val adRepo = new AdsRepoFuture(InMemObjs.adAction)
   val impressionRepo = new AdImpressionRepo(InMemObjs.impressionAction)
   val impressionClicksRepo = new AdImpressionClickRepo(InMemObjs.impressionClicksAction)
 

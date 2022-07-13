@@ -36,7 +36,11 @@ object Dependencies {
   val logback = "ch.qos.logback" % "logback-classic" % "1.2.11" % Test
   val scalaLogging = "com.typesafe.scala-logging" %% "scala-logging" % "3.9.5"
 
+  val catsCore = "org.typelevel" %% "cats-core" % "2.8.0"
+  val catsEffects = "org.typelevel" %% "cats-effect" % "3.3.13"
 
-  val common_deps = Seq(logback, scalaLogging)
+
+
+  val common_deps = Seq(logback, scalaLogging, catsCore, catsEffects)
 
 }

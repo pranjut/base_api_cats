@@ -8,6 +8,7 @@ iv.   Slick table mapping and queries </br>
 v.    Unit tests of db functions with h2 </br>
 vi.   Service layer </br>
 vii.  Logging </br>
+viii. Use tagless final
 
 
 ## How to test

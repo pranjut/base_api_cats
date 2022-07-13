@@ -23,7 +23,7 @@ class AdImpressionRepoSpec extends SlickSpec
     Await.result(InMemObjs.impressionAction.deleteSchema, 1.minute)
   }
 
-  val adRepo = new AdsRepo(InMemObjs.adAction)
+  val adRepo = new AdsRepoFuture(InMemObjs.adAction)
   val impressionRepo = new AdImpressionRepo(InMemObjs.impressionAction)
 
   it should "be able to insert and get" in {

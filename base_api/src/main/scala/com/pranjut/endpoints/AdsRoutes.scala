@@ -11,12 +11,13 @@ import scala.util.{ Failure, Success }
 trait AdsRoutes extends JsonSupport with BaseModule {
 
   import akka.http.scaladsl.server.Directives._
+  implicit val runtime = cats.effect.unsafe.IORuntime.global
 
   def adRoutes(implicit ex: ExecutionContext): Route = {
     pathPrefix("insert" / "ad") {
       post {
         entity(as[Ad]) { ad: Ad =>
-          onComplete(coreModule.adService.insert(ad)) {
+          onComplete(coreModule.adService.insert(ad).unsafeToFuture()) {
             _ match {
               case Success(value) =>
                 logger.info(s"Successfully inserted new ad with id ${value.id}")
@@ -31,7 +32,7 @@ trait AdsRoutes extends JsonSupport with BaseModule {
     } ~ pathPrefix("delete" / "ad" / LongNumber) { id: Long =>
       delete {
         {
-          onComplete(coreModule.adService.delete(id)) {
+          onComplete(coreModule.adService.delete(id).unsafeToFuture()) {
             _ match {
               case Success(value) => complete(StatusCodes.OK, MessageResponse("Successfully deleted"))
               case Failure(exception) =>
@@ -44,7 +45,7 @@ trait AdsRoutes extends JsonSupport with BaseModule {
     } ~ pathPrefix("get" / "ad" / LongNumber) { id: Long =>
       get {
         {
-          onComplete(coreModule.adService.get(id)) {
+          onComplete(coreModule.adService.get(id).unsafeToFuture()) {
             _ match {
               case Success(Some(value)) => complete(StatusCodes.OK, value)
               case Success(None) => complete(StatusCodes.NotFound, MessageResponse("No Ad could be found"))

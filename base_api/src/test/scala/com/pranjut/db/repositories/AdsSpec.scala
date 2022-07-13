@@ -21,7 +21,7 @@ class AdsSpec extends SlickSpec
     Await.result(InMemObjs.adAction.deleteSchema, 1.minute)
   }
 
-  val adRepo = new AdsRepo(InMemObjs.adAction)
+  val adRepo = new AdsRepoFuture(InMemObjs.adAction)
 
   it should "be able to insert and get" in {
     val ad = Ad(0, "Buy Apple Laptop", 1)

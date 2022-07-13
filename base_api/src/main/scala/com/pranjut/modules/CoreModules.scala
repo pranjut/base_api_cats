@@ -1,7 +1,8 @@
 package com.pranjut.modules
 
+import cats.effect.IO
 import com.pranjut.db.actions.{ AdAction, AdImpressionAction, AdImpressionClicksAction }
-import com.pranjut.db.repositories.{ AdImpressionClickRepo, AdImpressionRepo, AdsRepo }
+import com.pranjut.db.repositories.{ AdImpressionClickRepo, AdImpressionRepo, AdsRepo, AdsRepoFuture, AsyncAdsRepo }
 import com.pranjut.db.slick.DBComponent
 import com.pranjut.services.AdService
 
@@ -15,11 +16,13 @@ trait CoreModules {
   lazy val impressionAction = new AdImpressionAction()
   lazy val impressionClicksAction = new AdImpressionClicksAction()
 
-  lazy val adRepo = new AdsRepo(adAction)
+  lazy val adRepoFuture = new AdsRepoFuture(adAction)
+  lazy val adRepoIO = new AsyncAdsRepo[IO](adRepoFuture)
+
   lazy val impressionRepo = new AdImpressionRepo(impressionAction)
   lazy val impressionClicksRepo = new AdImpressionClickRepo(impressionClicksAction)
 
-  lazy val adService = new AdService(this)
+  lazy val adService = new AdService[IO](adRepoIO)
 }
 
 object CoreModulesWithPostgres extends CoreModules {
